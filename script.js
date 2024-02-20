@@ -1,6 +1,8 @@
 const gameBoard = (function () {
     let board = ['', '', '', '', '', '', '', '', '']
 
+    // let board = [['','',''],['','',''],['','','']]
+
     return { board }
 })();
 
