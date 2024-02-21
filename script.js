@@ -106,18 +106,22 @@ const game = (function () {
     // }
 
     const determineIfGameHasWinner = () => {
-        winningCombos.forEach((combo) => {
-            //the line below this is the broken line
-            let values = combo.map(index => gameBoard.board[index])
+        // winningCombos.forEach((combo) => {
+        //     //the line below this is the broken line
+        //     let values = combo.map(index => gameBoard.board[index])
 
-            if(values.every((el) => el === player.players[0].token)){
-                console.log(`${player.players[0]} is the winner`)
-            }
+        //     console.log('v', values)
 
-            if(values.every((el) => el === player.players[1].token)){
-                console.log(`${player.players[1]} is the winner`)
-            }
-        })
+        //     if(values.every((el) => el === player.players[0].token)){
+        //         console.log(`${player.players[0]} is the winner`)
+        //     }
+
+        //     if(values.every((el) => el === player.players[1].token)){
+        //         console.log(`${player.players[1]} is the winner`)
+        //     }
+        // })
+
+        console.log(winningCombos[0])
     }
 
 
