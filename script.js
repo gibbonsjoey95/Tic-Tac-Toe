@@ -1,73 +1,112 @@
 const gameBoard = (function () {
-    let board = ['', '', '', '', '', '', '', '', '']
+    // let board = ['', '', '', '', '', '', '', '', '']
 
-    // let board = [['','',''],['','',''],['','','']]
+    let board = [['x','x',''],['','',''],['','','']]
 
-    return { board }
+    const getBoard = () => board
+
+    return { board, getBoard }
 })();
 
-const player = (function () {
-    let player1 = 'x'
-    let player2 = 'o'
+console.log(gameBoard.getBoard())
 
-    return {player1, player2}
+const player = (function () {
+    let playerOneName = 'Player One'
+    let playerTwoName = 'Player Two'
+
+    const players = [
+        {
+            name: playerOneName,
+            token: 'x'
+        },
+        {
+            name: playerTwoName,
+            token: 'o'
+        }
+    ]
+
+    return { players }
 })()
 
 const game = (function () {
-    const startingPlayer = player.player1
-    let playerTurn = player.player1
+    let activePlayer = player.players[0]
+
+    // let winningCombos = [
+    //     [0,1,2],
+    //     [3,4,5],
+    //     [6,7,8],
+    //     [0,3,6],
+    //     [1,4,7],
+    //     [2,5,8],
+    //     [0,4,8],
+    //     [2,4,6]
+    // ]
 
     let winningCombos = [
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8],
-        [0,4,8],
-        [2,4,6]
+        [[0,0],[0,1],[0,2]]
     ]
 
-    const changePlayersTurn = () => {
-        if(playerTurn === startingPlayer){
-            playerTurn = player.player2
-        } else {
-            playerTurn = player.player1
-        }
+    const switchPlayerTurn = () => {
+        activePlayer = activePlayer === player.players[0] ? player.players[1] : player.players[0]
     }
 
+    // const playerChoice = (choice) => {
+    //     let index = gameBoard.board[choice]
+
+        // if(index === ''){
+        //     gameBoard.board[choice] = activePlayer.token
+        //     switchPlayerTurn()
+        // } else if(index !== ''){
+        //     console.log('This spot has already been chosen. Please choose another!')
+        // }
+
+    //     determineIfGameHasWinner()
+    //     return gameBoard.board
+    // }
+
     const playerChoice = (choice) => {
-        let index = gameBoard.board[choice]
+        let index = gameBoard.board[choice[0]][choice[1]]
 
         if(index === ''){
-            gameBoard.board[choice] = playerTurn
-            changePlayersTurn()
+            gameBoard.board[choice[0]][choice[1]] = activePlayer.token
+            switchPlayerTurn()
         } else if(index !== ''){
             console.log('This spot has already been chosen. Please choose another!')
         }
 
         determineIfGameHasWinner()
-        return gameBoard.board
+        return gameBoard.getBoard()
     }
 
-    const determineIfGameHasWinner = () => {
-        // if(gameBoard.board[0] === 'x' && gameBoard.board[1] === 'x' && gameBoard.board[2] === 'x'){
-        //     console.log(`${player.player1} is the winner!`)
-        // }
-        winningCombos.forEach((combo) => {
-            let values = combo.map(index => gameBoard.board[index])
-            
-            if(values.every((el) => el === player.player1)){
-                console.log(`${player.player1} is the winner`)
-            }
+    // const determineIfGameHasWinner = () => {
 
-            if(values.every((el) => el === player.player2)){
-                console.log(`${player.player2} is the winner`)
-            }
-        })
+    //     winningCombos.forEach((combo) => {
+    //         let values = combo.map(index => gameBoard.board[index])
+            
+    //         if(values.every((el) => el === player.players[0].token)){
+    //             console.log(`${player.players[0]} is the winner`)
+    //         }
+
+    //         if(values.every((el) => el === player.players[1].token)){
+    //             console.log(`${player.players[1]} is the winner`)
+    //         }
+    //     })
         
+    // }
+
+    const determineIfGameHasWinner = () => {
+        console.log(gameBoard.board)
+
+        // check rows
+        for(let i = 0; i < gameBoard.board.length; i++){
+            console.log('row', gameBoard.board[i])
+        
+            const column = gameBoard.board.map((row) => row[i])
+        }
     }
 
     return {playerChoice, determineIfGameHasWinner}
 })()
+
+// console.log(game.playerChoice([0,0])
 
