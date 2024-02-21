@@ -30,6 +30,7 @@ const player = (function () {
 
 const game = (function () {
     let activePlayer = player.players[0]
+    let board = gameBoard.board
 
     // let winningCombos = [
     //     [0,1,2],
@@ -43,7 +44,17 @@ const game = (function () {
     // ]
 
     let winningCombos = [
-        [[0,0],[0,1],[0,2]]
+        // rows
+        [board[0][0], board[0][1], board[0][2]],
+        [board[1][0], board[1][1], board[1][2]],
+        [board[2][0], board[2][1], board[2][2]],
+        //columns
+        [board[0][0], board[1][0], board[2][0]],
+        [board[0][1], board[1][1], board[2][1]],
+        [board[0][2], board[1][2], board[2][2]],
+        //diagonals
+        [board[0][0], board[1][1], board[2][2]],
+        [board[0][2], board[1][1], board[2][0]] 
     ]
 
     const switchPlayerTurn = () => {
@@ -95,15 +106,20 @@ const game = (function () {
     // }
 
     const determineIfGameHasWinner = () => {
-        console.log(gameBoard.board)
+        winningCombos.forEach((combo) => {
+            //the line below this is the broken line
+            let values = combo.map(index => gameBoard.board[index])
 
-        // check rows
-        for(let i = 0; i < gameBoard.board.length; i++){
-            console.log('row', gameBoard.board[i])
-        
-            const column = gameBoard.board.map((row) => row[i])
-        }
+            if(values.every((el) => el === player.players[0].token)){
+                console.log(`${player.players[0]} is the winner`)
+            }
+
+            if(values.every((el) => el === player.players[1].token)){
+                console.log(`${player.players[1]} is the winner`)
+            }
+        })
     }
+
 
     return {playerChoice, determineIfGameHasWinner}
 })()
