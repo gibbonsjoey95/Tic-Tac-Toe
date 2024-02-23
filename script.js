@@ -1,16 +1,16 @@
 const gameBoard = (function () {
     const row = 3
     const column = 3
-    // const board = []
+    const board = []
 
-    // for(i = 0; i < row; i++){
-    //     board.push([])
-    //     for(j = 0; j < column; j++){
-    //         board[i].push('')
-    //     }
-    // }
+    for(i = 0; i < row; i++){
+        board.push([])
+        for(j = 0; j < column; j++){
+            board[i].push('')
+        }
+    }
 
-    const board = [['','x','x'],['x','o','o'],['x','o','x']]
+    // const board = [['','x','x'],['x','o','o'],['x','o','x']]
 
     const getBoard = () => board
 
@@ -87,7 +87,7 @@ const game = (function () {
         }
        }
 
-       //check for tie
+       // Check for tie
         if(board[0].every((el) => el !== '') && board[1].every((el) => el !== '') && board[2].every((el) => el !== '')){
             console.log('tie')
             return true
