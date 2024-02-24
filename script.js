@@ -2,11 +2,14 @@ const gameBoard = (function () {
     const row = 3
     const column = 3
     const board = []
+    const cleanBoard = []
 
     for(i = 0; i < row; i++){
         board.push([])
+        cleanBoard.push([])
         for(j = 0; j < column; j++){
             board[i].push('')
+            cleanBoard[i].push('')
         }
     }
 
@@ -14,7 +17,7 @@ const gameBoard = (function () {
 
     const getBoard = () => board
 
-    return { board, getBoard }
+    return { board, cleanBoard, getBoard }
 })();
 
 const player = (function () {
@@ -99,12 +102,10 @@ const game = (function () {
         }
 
        return false
-
     }
 
-    getActivePlayerToken()
 
-    return {playerChoice, determineIfGameHasWinner, activePlayer, getActivePlayerToken}
+    return {playerChoice, determineIfGameHasWinner, getActivePlayerToken}
 })()
 
 const render = () => {
@@ -122,6 +123,7 @@ const render = () => {
                 game.playerChoice([colIndex, rowIndex])
 
                 square.textContent = game.getActivePlayerToken()
+                console.log('clean', gameBoard.cleanBoard)
             })
 
             row.appendChild(square)
@@ -129,6 +131,7 @@ const render = () => {
         
         board.appendChild(row)
     })
+
 }
 
 render()
