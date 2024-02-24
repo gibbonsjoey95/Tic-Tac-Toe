@@ -24,11 +24,11 @@ const player = (function () {
     const players = [
         {
             name: playerOneName,
-            token: 'x'
+            token: 'X'
         },
         {
             name: playerTwoName,
-            token: 'o'
+            token: 'O'
         }
     ]
 
@@ -41,6 +41,11 @@ const game = (function () {
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player.players[0] ? player.players[1] : player.players[0]
+    }
+
+    const getActivePlayerToken = () => {
+        // console.log(activePlayer.token)
+        return activePlayer.token === 'X' ? 'O' : 'X'
     }
 
     const playerChoice = (choice) => {
@@ -97,8 +102,34 @@ const game = (function () {
 
     }
 
+    getActivePlayerToken()
 
-    return {playerChoice, determineIfGameHasWinner}
+    return {playerChoice, determineIfGameHasWinner, activePlayer, getActivePlayerToken}
 })()
 
+const render = () => {
+    const board = document.querySelector('#board')
+
+    gameBoard.board.forEach((arr, rowIndex) => {
+        let row = document.createElement('div')
+
+        arr.forEach((el, colIndex) => {
+            let square = document.createElement('div')
+            square.classList.add('square')
+            square.textContent = ''
+
+            square.addEventListener('click', () => {
+                game.playerChoice([colIndex, rowIndex])
+
+                square.textContent = game.getActivePlayerToken()
+            })
+
+            row.appendChild(square)
+        })
+        
+        board.appendChild(row)
+    })
+}
+
+render()
 
