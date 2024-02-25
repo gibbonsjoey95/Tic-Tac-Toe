@@ -20,14 +20,17 @@ const gameBoard = (function () {
                 board[i][j] = ''
             }
         }
+
+        player.players[0].name = document.querySelector('#player1').value
+        player.players[1].name = document.querySelector('#player2').value
     }
 
-    return { board, getBoard, startGame }
+    return { getBoard, startGame}
 })();
 
 const player = (function () {
-    let playerOneName = 'Player One'
-    let playerTwoName = 'Player Two'
+    let playerOneName = 'Player1'
+    let playerTwoName = 'Player2'
 
     const players = [
         {
@@ -44,23 +47,23 @@ const player = (function () {
 })()
 
 const game = (function () {
+    let board = gameBoard.getBoard()
+    
     let activePlayer = player.players[0]
-    let board = gameBoard.board
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player.players[0] ? player.players[1] : player.players[0]
     }
 
     const getActivePlayerToken = () => {
-        // console.log(activePlayer.token)
         return activePlayer.token === 'X' ? 'O' : 'X'
     }
 
     const playerChoice = (choice) => {
-        let index = gameBoard.board[choice[0]][choice[1]]
+        let index = board[choice[0]][choice[1]]
 
         if(index === ''){
-            gameBoard.board[choice[0]][choice[1]] = activePlayer.token
+            board[choice[0]][choice[1]] = activePlayer.token
             switchPlayerTurn()
         } else if(index !== ''){
             console.log('This spot has already been chosen. Please choose another!')
@@ -114,19 +117,20 @@ const game = (function () {
 })()
 
 const render = () => {
-    const board = document.querySelector('#board')
-    const startBtn = document.querySelector('#startBtn')
+    let board = gameBoard.getBoard()
 
-    startBtn.classList.add('hidden')
+    const displayedBoard = document.querySelector('#board')
+    const startBrn = document.querySelector('#startBtn')
+    const reStartBtn = document.querySelector('#reStartBtn')
 
     const displayTokens = () => {
-        if(board.childNodes.length > 0){
-            while(board.firstChild){
-                board.removeChild(board.firstChild)
+        if(displayedBoard.childNodes.length > 0){
+            while(displayedBoard.firstChild){
+                displayedBoard.removeChild(displayedBoard.firstChild)
             }
         }
         
-        gameBoard.board.forEach((arr, rowIndex) => {
+        board.forEach((arr, rowIndex) => {
             let row = document.createElement('div')
             
             arr.forEach((el, colIndex) => {
@@ -143,12 +147,16 @@ const render = () => {
                 row.appendChild(square)
             })
             
-            board.appendChild(row)
-            startBtn.textContent = 'Restart Game'
+            displayedBoard.appendChild(row)
         })
     }
 
-    startBtn.addEventListener('click', () => {
+    startBrn.addEventListener('click', () => {
+         gameBoard.startGame()
+         displayTokens()
+    })
+
+    reStartBtn.addEventListener('click', () => {
         console.log('clicked')
         console.log(gameBoard.getBoard())
         gameBoard.startGame()
