@@ -1,4 +1,6 @@
 const gameBoard = (function () {
+    const startGameOverlay = document.querySelector('#startGameOverlay')
+
     const row = 3
     const column = 3
     const board = []
@@ -23,6 +25,8 @@ const gameBoard = (function () {
 
         player.players[0].name = document.querySelector('#player1').value
         player.players[1].name = document.querySelector('#player2').value
+
+        startGameOverlay.style.display = 'none'
     }
 
     return { getBoard, startGame}
@@ -57,6 +61,10 @@ const game = (function () {
 
     const getActivePlayerToken = () => {
         return activePlayer.token === 'X' ? 'O' : 'X'
+    }
+
+    const restartedGameActivePlayer = () => {
+        return activePlayer = player.players[0]
     }
 
     const playerChoice = (choice) => {
@@ -113,7 +121,7 @@ const game = (function () {
     }
 
 
-    return {playerChoice, determineIfGameHasWinner, getActivePlayerToken}
+    return {playerChoice, determineIfGameHasWinner, getActivePlayerToken, restartedGameActivePlayer}
 })()
 
 const render = () => {
@@ -157,9 +165,8 @@ const render = () => {
     })
 
     reStartBtn.addEventListener('click', () => {
-        console.log('clicked')
-        console.log(gameBoard.getBoard())
         gameBoard.startGame()
+        game.restartedGameActivePlayer()
         displayTokens()
     })
 
