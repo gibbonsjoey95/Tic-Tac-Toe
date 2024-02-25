@@ -2,14 +2,11 @@ const gameBoard = (function () {
     const row = 3
     const column = 3
     const board = []
-    const cleanBoard = []
 
     for(i = 0; i < row; i++){
         board.push([])
-        cleanBoard.push([])
         for(j = 0; j < column; j++){
             board[i].push('')
-            cleanBoard[i].push('')
         }
     }
 
@@ -17,7 +14,15 @@ const gameBoard = (function () {
 
     const getBoard = () => board
 
-    return { board, cleanBoard, getBoard }
+    const startGame = () => {
+        for(let i = 0; i < board.length; i++){
+            for(let j = 0; j < board[i].length; j++){
+                board[i][j] = ''
+            }
+        }
+    }
+
+    return { board, getBoard, startGame }
 })();
 
 const player = (function () {
@@ -110,28 +115,47 @@ const game = (function () {
 
 const render = () => {
     const board = document.querySelector('#board')
+    const startBtn = document.querySelector('#startBtn')
 
-    gameBoard.board.forEach((arr, rowIndex) => {
-        let row = document.createElement('div')
+    startBtn.classList.add('hidden')
 
-        arr.forEach((el, colIndex) => {
-            let square = document.createElement('div')
-            square.classList.add('square')
-            square.textContent = ''
-
-            square.addEventListener('click', () => {
-                game.playerChoice([colIndex, rowIndex])
-
-                square.textContent = game.getActivePlayerToken()
-                console.log('clean', gameBoard.cleanBoard)
-            })
-
-            row.appendChild(square)
-        })
+    const displayTokens = () => {
+        if(board.childNodes.length > 0){
+            while(board.firstChild){
+                board.removeChild(board.firstChild)
+            }
+        }
         
-        board.appendChild(row)
+        gameBoard.board.forEach((arr, rowIndex) => {
+            let row = document.createElement('div')
+            
+            arr.forEach((el, colIndex) => {
+                let square = document.createElement('div')
+                square.classList.add('square')
+                square.textContent = ''
+
+                square.addEventListener('click', () => {
+                    game.playerChoice([colIndex, rowIndex])
+
+                    square.textContent = game.getActivePlayerToken()
+                })
+
+                row.appendChild(square)
+            })
+            
+            board.appendChild(row)
+            startBtn.textContent = 'Restart Game'
+        })
+    }
+
+    startBtn.addEventListener('click', () => {
+        console.log('clicked')
+        console.log(gameBoard.getBoard())
+        gameBoard.startGame()
+        displayTokens()
     })
 
+    displayTokens()
 }
 
 render()
