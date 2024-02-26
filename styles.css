@@ -1,22 +1,32 @@
 .game-board {
     margin: auto;
-    width: 101px;
-    height: 103px;
+    width: 201px;
+    height: 203px;
     border: solid 1px red;
     display: flex;
     justify-content: space-around;
 }
 
 .square {
-    height: 33px;
-    width: 33px;
+    height: 66px;
+    width: 66px;
     cursor: pointer;
-    border: solid green 1px;
+    border: solid green .5px;
 
     font-size: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.game-container {
+    width: 300px;
+    height: 300px;
+    border: solid red 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .overlay {
