@@ -1,5 +1,6 @@
 const gameBoard = (function () {
     const startGameOverlay = document.querySelector('#startGameOverlay')
+    const endGameOverlay = document.querySelector('#endGameOverlay')
 
     const row = 3
     const column = 3
@@ -11,8 +12,6 @@ const gameBoard = (function () {
             board[i].push('')
         }
     }
-
-    // const board = [['','x','x'],['x','o','o'],['x','o','x']]
 
     const getBoard = () => board
 
@@ -27,6 +26,8 @@ const gameBoard = (function () {
         player.players[1].name = document.querySelector('#player2').value
 
         startGameOverlay.style.display = 'none'
+        endGameOverlay.classList.add('hidden')
+        endGameOverlay.classList.remove('overlay')
     }
 
     return { getBoard, startGame}
@@ -52,6 +53,8 @@ const player = (function () {
 
 const game = (function () {
     let board = gameBoard.getBoard()
+    const winingPlayer = document.querySelector('#winingPlayer')
+    const endGameOverlay = document.querySelector('#endGameOverlay')
     
     let activePlayer = player.players[0]
 
@@ -75,6 +78,7 @@ const game = (function () {
             switchPlayerTurn()
         } else if(index !== ''){
             console.log('This spot has already been chosen. Please choose another!')
+            alert('This spot has already been chosen. Please choose another!')
         }
 
         determineIfGameHasWinner()
@@ -102,11 +106,17 @@ const game = (function () {
        for(let combo of winningCombos){
             if(combo.every((el) => el === player.players[0].token)){
                 console.log(`${player.players[0].name} is the winner`) 
+                winingPlayer.textContent = `${player.players[0].name} is the winner`
+                endGameOverlay.classList.remove('hidden')
+                endGameOverlay.classList.add('overlay')
                 return true
             }
 
             if(combo.every((el) => el === player.players[1].token)){
                  console.log(`${player.players[1].name} is the winner`)
+                 winingPlayer.textContent = `${player.players[1].name} is the winner`
+                 endGameOverlay.classList.remove('hidden')
+                 endGameOverlay.classList.add('overlay')
                  return true
         }
        }
