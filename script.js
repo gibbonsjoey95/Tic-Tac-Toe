@@ -105,7 +105,6 @@ const game = (function () {
         // Check for win
        for(let combo of winningCombos){
             if(combo.every((el) => el === player.players[0].token)){
-                console.log(`${player.players[0].name} is the winner`) 
                 winingPlayer.textContent = `${player.players[0].name} is the winner`
                 endGameOverlay.classList.remove('hidden')
                 endGameOverlay.classList.add('overlay')
@@ -113,7 +112,6 @@ const game = (function () {
             }
 
             if(combo.every((el) => el === player.players[1].token)){
-                 console.log(`${player.players[1].name} is the winner`)
                  winingPlayer.textContent = `${player.players[1].name} is the winner`
                  endGameOverlay.classList.remove('hidden')
                  endGameOverlay.classList.add('overlay')
@@ -124,6 +122,9 @@ const game = (function () {
        // Check for tie
         if(board[0].every((el) => el !== '') && board[1].every((el) => el !== '') && board[2].every((el) => el !== '')){
             console.log('tie')
+            winingPlayer.textContent = "The game ended in a tie! Please play again!"
+            endGameOverlay.classList.remove('hidden')
+            endGameOverlay.classList.add('overlay')
             return true
         }
 
@@ -139,7 +140,7 @@ const render = () => {
 
     const displayedBoard = document.querySelector('#board')
     const startBrn = document.querySelector('#startBtn')
-    const reStartBtn = document.querySelector('#reStartBtn')
+    const restartBtn = document.querySelectorAll('.restart-btn')
 
     const displayTokens = () => {
         if(displayedBoard.childNodes.length > 0){
@@ -174,11 +175,14 @@ const render = () => {
          displayTokens()
     })
 
-    reStartBtn.addEventListener('click', () => {
-        gameBoard.startGame()
-        game.restartedGameActivePlayer()
-        displayTokens()
+    restartBtn.forEach((button)  => {
+        button.addEventListener('click', () => {
+            gameBoard.startGame()
+            game.restartedGameActivePlayer()
+            displayTokens()
+        })
     })
+
 
     displayTokens()
 }
