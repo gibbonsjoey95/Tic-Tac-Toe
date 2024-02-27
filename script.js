@@ -79,6 +79,7 @@ const game = (function () {
         } else if(index !== ''){
             console.log('This spot has already been chosen. Please choose another!')
             alert('This spot has already been chosen. Please choose another!')
+            return
         }
 
         determineIfGameHasWinner()
