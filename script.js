@@ -84,8 +84,9 @@ const game = (function () {
         determineIfGameHasWinner()
         return gameBoard.board
     }
-
+    
     const determineIfGameHasWinner = () => {
+        console.log(board)
         let winningCombos = [
             // rows
             [board[0][0], board[0][1], board[0][2]],
@@ -129,6 +130,7 @@ const game = (function () {
         }
 
        return false
+
     }
 
 
@@ -151,6 +153,7 @@ const render = () => {
         
         board.forEach((arr, rowIndex) => {
             let row = document.createElement('div')
+            row.classList.add('row')
             
             arr.forEach((el, colIndex) => {
                 let square = document.createElement('div')
