@@ -58,8 +58,12 @@ const game = (function () {
     
     let activePlayer = player.players[0]
 
+    console.log(1, activePlayer)
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player.players[0] ? player.players[1] : player.players[0]
+
+        console.log(2, activePlayer)
+        return activePlayer.token
     }
 
     const getActivePlayerToken = () => {
@@ -79,7 +83,7 @@ const game = (function () {
         } else if(index !== ''){
             console.log('This spot has already been chosen. Please choose another!')
             alert('This spot has already been chosen. Please choose another!')
-            return
+            return true
         }
 
         determineIfGameHasWinner()
@@ -164,7 +168,9 @@ const render = () => {
                 square.addEventListener('click', () => {
                     game.playerChoice([colIndex, rowIndex])
 
-                    square.textContent = game.getActivePlayerToken()
+                    if(square.textContent === ''){
+                        square.textContent = game.getActivePlayerToken()
+                    }
                 })
 
                 row.appendChild(square)
