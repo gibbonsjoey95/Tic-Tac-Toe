@@ -57,6 +57,8 @@ const game = (function () {
     let board = gameBoard.getBoard()
     const winingPlayer = document.querySelector('#winingPlayer')
     const endGameOverlay = document.querySelector('#endGameOverlay')
+    const player1Score = document.querySelector('#firstPlayerScore')
+    const player2Score = document.querySelector('#secondPlayerScore')
     
     let activePlayer = player.players[0]
 
@@ -116,6 +118,8 @@ const game = (function () {
                 winingPlayer.textContent = `${player.players[0].name} is the winner`
                 endGameOverlay.classList.remove('hidden')
                 endGameOverlay.classList.add('overlay')
+                player.players[0].score++
+                player1Score.textContent = `${player.players[0].name}- ${player.players[0].score}`
                 return true
             }
 
@@ -123,6 +127,8 @@ const game = (function () {
                  winingPlayer.textContent = `${player.players[1].name} is the winner`
                  endGameOverlay.classList.remove('hidden')
                  endGameOverlay.classList.add('overlay')
+                 player.players[1].score++
+                 player2Score.textContent = `${player.players[1].name}- ${player.players[1].score}`
                  return true
         }
        }
@@ -150,6 +156,8 @@ const render = () => {
     const displayedBoard = document.querySelector('#board')
     const startBrn = document.querySelector('#startBtn')
     const restartBtn = document.querySelectorAll('.restart-btn')
+    // const player1Score = document.querySelector('#firstPlayerScore')
+    // const player2Score = document.querySelector('#secondPlayerScore')
 
     const displayTokens = () => {
         if(displayedBoard.childNodes.length > 0){
@@ -201,7 +209,6 @@ const render = () => {
             displayTokens()
         })
     })
-
 
     displayTokens()
 }

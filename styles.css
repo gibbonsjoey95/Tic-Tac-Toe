@@ -73,6 +73,12 @@ body {
     align-items: center;
 }
 
+.player-scores {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .hidden {
     display: none;
 }
