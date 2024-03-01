@@ -1,6 +1,11 @@
 body {
     padding: 0;
     margin: 0;
+    background-color: #3f51b5;
+}
+
+.btn {
+    background-color: #ffc107;
 }
 
 .game-container {
@@ -10,7 +15,6 @@ body {
     margin: 0;
     width: 100vw;
     height: 600px;
-    /* border: solid red 1px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,15 +30,13 @@ body {
 }
 
 .square {
-    padding: 0;
-    margin: 0;
     font-family: "Permanent Marker", cursive;
     font-style: normal;
+    background-color: #e0e0e0;
+    border: 1px solid #424242;
     height: 100px;
     width: 100px;
     cursor: pointer;
-    border: solid green .5px;
-
     font-size: 6rem;
     box-sizing: border-box;
     line-height: 32px;
@@ -43,13 +45,17 @@ body {
     justify-content: center;
 }
 
+.square:hover {
+    background-color: #f5f5f5;
+}
+
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +63,8 @@ body {
 }
 
 .overlay-content {
-    background-color: #f5f5f5;
+    background-color: #ffffff;
+    color: #212121;
     padding: 20px;
     border-radius: 10px;
     display: flex;
@@ -71,8 +78,31 @@ body {
 }
 
 .row {
-    border: solid blue 2px;
+    /* border: solid blue 2px; */
     padding: 0;
     margin: 0;
 }
 
+.blue {
+    color: #2196f3;
+}
+
+.red {
+    color: #f44336;
+}
+
+.top {
+    border-top: none;
+}
+
+.right {
+    border-right: none;
+}
+
+.bottom {
+    border-bottom: none;
+}
+
+.left {
+    border-left: none;
+}

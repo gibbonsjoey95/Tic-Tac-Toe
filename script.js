@@ -40,11 +40,13 @@ const player = (function () {
     const players = [
         {
             name: playerOneName,
-            token: 'X'
+            token: 'X',
+            score: 0
         },
         {
             name: playerTwoName,
-            token: 'O'
+            token: 'O',
+            score: 0
         }
     ]
 
@@ -165,11 +167,18 @@ const render = () => {
                 square.classList.add('square')
                 square.textContent = ''
 
+                if(colIndex === 0) square.classList.add('top')
+                if(rowIndex === 2) square.classList.add('right')
+                if(colIndex === 2) square.classList.add('bottom')
+                if(rowIndex === 0) square.classList.add('left')
+
                 square.addEventListener('click', () => {
                     game.playerChoice([colIndex, rowIndex])
 
                     if(square.textContent === ''){
                         square.textContent = game.getActivePlayerToken()
+
+                        game.getActivePlayerToken() === 'X' ? square.classList.add('blue') : square.classList.add('red')
                     }
                 })
 
