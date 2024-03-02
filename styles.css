@@ -2,6 +2,9 @@ body {
     padding: 0;
     margin: 0;
     background-color: #3f51b5;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 .btn {

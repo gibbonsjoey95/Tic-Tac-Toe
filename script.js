@@ -62,7 +62,6 @@ const game = (function () {
     
     let activePlayer = player.players[0]
 
-    console.log(1, activePlayer)
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === player.players[0] ? player.players[1] : player.players[0]
 
@@ -110,108 +109,130 @@ const game = (function () {
             [board[0][2], board[1][1], board[2][0]] 
         ]
 
-
-
         // Check for win
        for(let combo of winningCombos){
             if(combo.every((el) => el === player.players[0].token)){
-                winingPlayer.textContent = `${player.players[0].name} is the winner`
-                endGameOverlay.classList.remove('hidden')
-                endGameOverlay.classList.add('overlay')
-                player.players[0].score++
-                player1Score.textContent = `${player.players[0].name}- ${player.players[0].score}`
+                displayWinner(player.players[0])
                 return true
             }
 
             if(combo.every((el) => el === player.players[1].token)){
-                 winingPlayer.textContent = `${player.players[1].name} is the winner`
-                 endGameOverlay.classList.remove('hidden')
-                 endGameOverlay.classList.add('overlay')
-                 player.players[1].score++
-                 player2Score.textContent = `${player.players[1].name}- ${player.players[1].score}`
-                 return true
+                displayWinner(player.players[1])
+                return true
         }
        }
 
        // Check for tie
-        if(board[0].every((el) => el !== '') && board[1].every((el) => el !== '') && board[2].every((el) => el !== '')){
-            console.log('tie')
-            winingPlayer.textContent = "The game ended in a tie! Please play again!"
-            endGameOverlay.classList.remove('hidden')
-            endGameOverlay.classList.add('overlay')
-            return true
+        if(isBoardFull()){
+            displayTie()
         }
 
        return false
 
     }
 
+    const displayWinner = (winningPlayer) => {
+        const playerName = winningPlayer.name ? winningPlayer.name : (winningPlayer === player.players[0] ? "Player 1" : "Player 2")
+        winingPlayer.textContent = `${playerName} is the winner`
+        updateScores(winningPlayer)
+        showEndGameOverlay()
+    }
+
+    const displayTie = () => {
+        winingPlayer.textContent = "The game ended in a tie! Please play agein!"
+        showEndGameOverlay()
+    }
+
+    const updateScores = (winner) => {
+       winner.score++                 
+       player1Score.textContent = `${player.players[0].name || 'Player 1'}- ${player.players[0].score}`
+       player2Score.textContent = `${player.players[1].name || 'Player 2'}- ${player.players[1].score}`
+    }
+
+    const showEndGameOverlay = () => {
+        endGameOverlay.classList.remove('hidden')
+        endGameOverlay.classList.add('overlay')
+    }
+
+    const isBoardFull = () => {
+        return board.every((row) => row.every((cell) => cell !== ''))
+    }
+
 
     return {playerChoice, determineIfGameHasWinner, getActivePlayerToken, restartedGameActivePlayer}
 })()
 
-const render = () => {
-    let board = gameBoard.getBoard()
+const renderBoard = () => {
 
-    const displayedBoard = document.querySelector('#board')
-    const startBrn = document.querySelector('#startBtn')
-    const restartBtn = document.querySelectorAll('.restart-btn')
-    // const player1Score = document.querySelector('#firstPlayerScore')
-    // const player2Score = document.querySelector('#secondPlayerScore')
+    const displayTokens = () => { 
+        const boardElement = document.querySelector('#board')
+        const boardData = gameBoard.getBoard()
 
-    const displayTokens = () => {
-        if(displayedBoard.childNodes.length > 0){
-            while(displayedBoard.firstChild){
-                displayedBoard.removeChild(displayedBoard.firstChild)
-            }
-        }
-        
-        board.forEach((arr, rowIndex) => {
-            let row = document.createElement('div')
-            row.classList.add('row')
-            
-            arr.forEach((el, colIndex) => {
-                let square = document.createElement('div')
-                square.classList.add('square')
-                square.textContent = ''
+        boardElement.innerHTML = ''
 
-                if(colIndex === 0) square.classList.add('top')
-                if(rowIndex === 2) square.classList.add('right')
-                if(colIndex === 2) square.classList.add('bottom')
-                if(rowIndex === 0) square.classList.add('left')
+        boardData.forEach((row, rowIndex) => {
+            const rowElement = document.createElement('div')
+            rowElement.classList.add('row')
 
-                square.addEventListener('click', () => {
-                    game.playerChoice([colIndex, rowIndex])
+            row.forEach((cell, colIndex) => {
+                const cellElement = document.createElement('div')
+                cellElement.classList.add('square')
 
-                    if(square.textContent === ''){
-                        square.textContent = game.getActivePlayerToken()
 
-                        game.getActivePlayerToken() === 'X' ? square.classList.add('blue') : square.classList.add('red')
-                    }
+                if(colIndex === 0) cellElement.classList.add('top')
+                if(rowIndex === 2) cellElement.classList.add('right')
+                if(colIndex === 2) cellElement.classList.add('bottom')
+                if(rowIndex === 0) cellElement.classList.add('left')
+
+                cellElement.addEventListener('click', () => {
+                    handleCellClick(cellElement, [colIndex, rowIndex])
                 })
-
-                row.appendChild(square)
+                rowElement.appendChild(cellElement)
             })
-            
-            displayedBoard.appendChild(row)
+            boardElement.appendChild(rowElement)
+    })}
+
+    const handleCellClick = (cellElement, position) => {
+        if(cellElement.textContent === ''){
+            game.playerChoice(position)
+
+            const activePlayerToken = game.getActivePlayerToken()
+            cellElement.textContent = activePlayerToken
+
+            activePlayerToken === 'X' ? cellElement.classList.add('blue') : cellElement.classList.add('red')
+        }
+
+    }
+
+    const handleStartButtonClick = () => {
+        gameBoard.startGame()
+        displayTokens()
+    }
+
+    const handleRestartButtonClick = () => {
+        gameBoard.startGame()
+        game.restartedGameActivePlayer()
+        displayTokens()
+    }
+
+    const bindEventListeners = () => {
+        const startBtn = document.querySelector('#startBtn')
+        const restartBtn = document.querySelectorAll('.restart-btn')
+
+        startBtn.addEventListener('click', handleStartButtonClick)
+
+        restartBtn.forEach((button) => {
+            button.addEventListener('click', handleRestartButtonClick)
         })
     }
 
-    startBrn.addEventListener('click', () => {
-         gameBoard.startGame()
-         displayTokens()
-    })
+    const render = () => {
+        displayTokens()
+        bindEventListeners()
+    }
 
-    restartBtn.forEach((button)  => {
-        button.addEventListener('click', () => {
-            gameBoard.startGame()
-            game.restartedGameActivePlayer()
-            displayTokens()
-        })
-    })
-
-    displayTokens()
+    render()
 }
 
-render()
+renderBoard()
 
